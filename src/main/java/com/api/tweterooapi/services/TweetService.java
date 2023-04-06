@@ -3,11 +3,12 @@ package com.api.tweterooapi.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import org.springframework.stereotype.Service;
 
-import com.api.tweterooapi.model.Person;
 import com.api.tweterooapi.model.Tweet;
-import com.api.tweterooapi.repository.PersonRepository;
 import com.api.tweterooapi.repository.TweetRepository;
 
 @Service
@@ -15,17 +16,20 @@ public class TweetService {
     @Autowired
     private TweetRepository tweetRepository;
     @Autowired
-    private PersonRepository personRepository;
+    private PersonService personService;
 
     public Tweet create(Tweet data) {
-        if (!findByUsername(data.getUsername()).isEmpty()) {
-            data.setAvatar(findByUsername(data.getUsername()).get(0).getAvatar());
+        if (!personService.findByUsername(data.getUsername()).isEmpty()) {
+            data.setAvatar(personService.findByUsername(data.getUsername()).get(0).getAvatar());
             return tweetRepository.save(data);
         }
         return data;
     }
 
-    public List<Person> findByUsername(String username) {
-        return personRepository.findByUsername(username);
+    public List<Tweet> getAll(int page) {
+        PageRequest paging = PageRequest.of(page, 5);
+        Page<Tweet> pagedResult = tweetRepository.findAllByOrderByIdDesc(paging);
+        return pagedResult.getContent();
     }
+
 }
