@@ -32,4 +32,8 @@ public class TweetService {
         return pagedResult.getContent();
     }
 
+    public List<Tweet> getByUsername(String username) {
+        return tweetRepository.findByUsername(username);
+    }
+
 }
