@@ -1,6 +1,6 @@
 package com.api.tweterooapi.model;
 
-import com.api.tweterooapi.dto.UserDTO;
+import com.api.tweterooapi.dto.PersonDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 
-public class User {
-    public User(UserDTO data) {
+public class Person {
+    public Person(PersonDTO data) {
         this.username = data.username();
         this.avatar = data.avatar();
     }
